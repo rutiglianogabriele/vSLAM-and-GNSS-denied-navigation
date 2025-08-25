@@ -14,23 +14,23 @@ This project is structured around several key processing stages, with a current 
 2.  **LiDAR Feature Extraction (`lidar_features.py`)**
     This module extracts salient 3D features from the segmented LiDAR point clouds. It identifies "edge" features (high curvature points) and "planar" features (low curvature points) by analyzing the local geometry of the point cloud. These features are crucial for robust odometry and mapping, providing stable geometric primitives for tracking and localization. Features are assigned unique IDs for tracking across frames.
 
-3.  **Visual Feature Tracking (Partially in `visual_features.py`, integrated via `main.py`)**
+3.  **Visual Feature Tracking**
     This component focuses on extracting and tracking 2D visual features (e.g., corners, edges, blobs) from camera images. These features act like unique visual landmarks that the system can easily spot and follow over time, even if the camera's perspective shifts or the lighting conditions change. They serve as critical visual anchors for subsequent data association.
 
 4.  **Multimodal Data Integration / Data Association (`data_association.py`)**
     This module is responsible for combining the 2D visual landmarks from the camera with the 3D segmented and featured LiDAR data to estimate precise 3D coordinates for each visual landmark. The process involves:
-    *   **Aligning Sensors:** Projecting 3D LiDAR points onto the 2D camera image using precise calibration information to establish spatial correspondence with visual features.
+    *   **Aligning Sensors:** Projecting 3D LiDAR points onto the 2D camera image using the calibration information to establish spatial correspondence with visual features.
     *   **Finding Context:** Performing a localized neighborhood search around each 2D visual landmark within the projected LiDAR points to understand the local 3D shape (e.g., edge, flat surface).
     *   **Fitting a Surface:** Fitting a small, flat surface (a "plane") to the most reliable LiDAR points in the neighborhood to create a stable and accurate local surface representation, mitigating noise from individual LiDAR measurements.
     *   **Calculating Depth:** Determining the depth for the visual landmark as the perpendicular distance from its 2D projected 3D location to this fitted plane, providing a robust depth measurement.
 
-This integrated 3D information is crucial for evaluating the vehicle's pose at each time step, a piece of information which will be crucial in next steps, which I look forward to introducing in more detail soon.
+The 3D features position information is crucial for evaluating the vehicle's pose at each time step, a piece of information which will be crucial in next steps for visual odometry, which I look forward to implement in this repository soon enough.
 
 ## Dataset Setup (KITTI)
 
-This project utilizes the [KITTI Vision Benchmark Suite](http://www.cvlibs.net/datasets/kitti/raw_data.php) for sensor data. To run the scripts, you need to download a raw data sequence (e.g., `2011_09_26_drive_0001_sync`) and place the relevant directories within a `Kitti/` folder in the root of this repository.
+This project utilizes the [KITTI Vision Benchmark Suite](http://www.cvlibs.net/datasets/kitti/raw_data.php) for sensor data and leverages sinchronised data. To run the scripts, you need to download the sinchronised version of the data sequence (e.g., `2011_09_26_drive_0001_sync`) and place the relevant directories within a `Kitti/` folder in the root of this repository.
 
-Specifically, the following directory structure is expected:
+The following directory structure is expected:
 
 ```
 Sensor Fusion/
@@ -54,7 +54,6 @@ Sensor Fusion/
 ├── kitti_utils.py
 ├── lidar_features.py
 ├── lidar_segmentation.py
-├── main.py
 └── ... (other project files)
 ```
 
