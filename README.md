@@ -58,3 +58,7 @@ Sensor Fusion/
 ```
 
 Ensure that the `image_02/data/` and `velodyne_points/data/` directories contain the synchronized image and LiDAR `.bin` files, respectively. The calibration files (`calib_cam_to_cam.txt`, `calib_imu_to_velo.txt`, `calib_velo_to_cam.txt`) should be directly under the `Kitti/` directory.
+
+
+https://github.com/user-attachments/assets/33ba2e52-42a5-41b5-b199-0a8a515c388c
+
